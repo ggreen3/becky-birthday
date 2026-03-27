@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Rebecca Rose · The Birthday Edit</title>
+    <!-- Google Fonts: refined serif + modern sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (minimal icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Canvas Confetti (luxury sparkle) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0806;
+            font-family: 'Montserrat', sans-serif;
+            color: #e8e0d4;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b18;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5a267;
+            border-radius: 8px;
+        }
+
+        .gold-text {
+            color: #dbb87c;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 6rem;
+            animation: fadeUp 1s ease-out;
+        }
+        .hero-sub {
+            letter-spacing: 4px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: #b8a27c;
+            margin-bottom: 1rem;
+        }
+        .hero-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5.5rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #f3ede5;
+            line-height: 1.1;
+        }
+        .hero-name span {
+            color: #dbb87c;
+            font-weight: 600;
+        }
+        .hero-divider {
+            width: 100px;
+            height: 2px;
+            background: #dbb87c;
+            margin: 1.8rem auto 1.2rem;
+        }
+        .hero-date {
+            font-size: 1rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #b8a27c;
+        }
+
+        .lux-card {
+            background: rgba(18, 15, 13, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(219, 184, 124, 0.25);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            margin-bottom: 4rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
+        }
+        .lux-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(219, 184, 124, 0.5);
+            box-shadow: 0 30px 45px -15px rgba(0,0,0,0.5);
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            letter-spacing: -0.3px;
+            border-left: 3px solid #dbb87c;
+            padding-left: 1.3rem;
+        }
+        .section-title i {
+            color: #dbb87c;
+            margin-right: 12px;
+            font-size: 1.8rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            cursor: pointer;
+            background: #16120f;
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .gallery-item img {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            display: block;
+            transition: transform 1s ease, filter 0.6s;
+            filter: grayscale(0.2) brightness(0.9);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.03);
+            filter: grayscale(0) brightness(1);
+        }
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 1.5rem 1.2rem 0.8rem;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            color: #f0e5d8;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .video-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .video-card {
+            flex: 1;
+            min-width: 280px;
+            background: #0f0c0a;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(219,184,124,0.3);
+            transition: all 0.3s;
+        }
+        .video-card video {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+        }
+        .video-label {
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #b8a27c;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .love-note {
+            text-align: center;
+            padding: 2rem 2rem 2.5rem;
+            background: rgba(219, 184, 124, 0.05);
+            border-radius: 2rem;
+            border: 1px solid rgba(219,184,124,0.2);
+        }
+        .love-note p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            font-style: italic;
+            color: #f2e6db;
+            max-width: 700px;
+            margin: 0 auto 1.8rem;
+            line-height: 1.4;
+        }
+        .btn-luxury {
+            background: transparent;
+            border: 1.5px solid #dbb87c;
+            color: #dbb87c;
+            padding: 0.9rem 2.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 40px;
+            margin: 0 0.5rem;
+            backdrop-filter: blur(4px);
+        }
+        .btn-luxury:hover {
+            background: #dbb87c;
+            color: #0a0806;
+            border-color: #dbb87c;
+            box-shadow: 0 5px 20px rgba(219,184,124,0.3);
+        }
+        .btn-luxury-solid {
+            background: #dbb87c;
+            color: #0a0806;
+            border: none;
+        }
+        .btn-luxury-solid:hover {
+            background: #e7c48a;
+            transform: scale(1.02);
+        }
+
+        .particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: #7a6a55;
+            border-top: 1px solid rgba(219,184,124,0.2);
+            margin-top: 3rem;
+        }
+        .made-with-love {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: #c5a267;
+        }
+
+        /* music control button */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(10,8,6,0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid #dbb87c;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            color: #dbb87c;
+            cursor: pointer;
+            z-index: 1100;
+            transition: all 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .music-control i {
+            margin-right: 6px;
+        }
+        .music-control:hover {
+            background: #dbb87c;
+            color: #0a0806;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(35px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 800px) {
+            .container { padding: 2rem 1.5rem; }
+            .hero-name { font-size: 3.2rem; }
+            .section-title { font-size: 2rem; }
+            .love-note p { font-size: 1.4rem; }
+            .btn-luxury { padding: 0.7rem 1.8rem; margin-bottom: 0.5rem; }
+        }
+        @media (max-width: 550px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Canvas for falling particles -->
+<canvas id="fallingCanvas" class="particle-canvas"></canvas>
+
+<!-- Background music (replace with your own audio file) -->
+<audio id="bgMusic" src="background-music.mp3" loop preload="auto"></audio>
+
+<div class="container">
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-sub">A celebration of elegance</div>
+        <div class="hero-name">
+            Rebecca <span>Rose</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-date">the birthday edition · forever cherished</div>
+    </div>
+
+    <!-- Gallery – Archives -->
+    <div class="lux-card">
+        <div class="section-title">
+            <i class="far fa-gem"></i> Archives
+        </div>
+        <div class="gallery-grid" id="premiumGallery">
+            <!-- Replace with your own images: becky1.jpg, becky2.jpg, etc. -->
+            <div class="gallery-item">
+                <img src="becky1.jpg" alt="Rebecca Rose - radiant grace" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&h=750&fit=crop';">
+                <div class="gallery-caption">her radiant grace · always luminous</div>
+            </div>
+            <div class="gallery-item">
+                <img src="becky2.jpg" alt="timeless elegance" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=600&h=750&fit=crop';">
+                <div class="gallery-caption">timeless elegance · pure poise</div>
+            </div>
+            <div class="gallery-item">
+                <img src="becky3.jpg" alt="gentle spirit" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516589091380-5d8e87df6999?w=600&h=750&fit=crop';">
+                <div class="gallery-caption">gentle spirit · warmth incarnate</div>
+            </div>
+            <div class="gallery-item">
+                <img src="becky4.jpg" alt="captivating charm" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1537633552985-df8429e8046b?w=600&h=750&fit=crop';">
+                <div class="gallery-caption">captivating charm · unforgettable</div>
+            </div>
+            <div class="gallery-item">
+                <img src="becky5.jpg" alt="inner light" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518199266791-5375a83190f2?w=600&h=750&fit=crop';">
+                <div class="gallery-caption">inner light · she illuminates</div>
+            </div>
+            <div class="gallery-item">
+                <img src="becky6.jpg" alt="dreamy aura" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=750&fit=crop';">
+                <div class="gallery-caption">dreamy aura · pure magic</div>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.7rem; letter-spacing: 1px; color:#b8a27c;">
+            <i class="fas fa-camera"></i> replace with your own: becky1.jpg … becky6.jpg
+        </p>
+    </div>
+
+    <!-- Video Memories -->
+    <div class="lux-card">
+        <div class="section-title">
+            <i class="fas fa-play-circle"></i> moving pictures
+        </div>
+        <div class="video-grid">
+            <div class="video-card">
+                <video id="video1" controls poster="poster1.jpg">
+                    <source src="video1.mp4" type="video/mp4">
+                </video>
+                <div class="video-label">✦ moments with you ✦</div>
+            </div>
+            <div class="video-card">
+                <video id="video2" controls poster="poster2.jpg">
+                    <source src="video2.mp4" type="video/mp4">
+                </video>
+                <div class="video-label">✦ your laughter ✦</div>
+            </div>
+        </div>
+        <p style="font-size:0.7rem; text-align:center; margin-top:1rem; color:#7a6a55;">(replace video1.mp4 & video2.mp4 with your own cinematic memories)</p>
+    </div>
+
+    <!-- Love Letter & Interactive Luxury -->
+    <div class="lux-card" style="background: rgba(10,8,6,0.8);">
+        <div class="love-note">
+            <i class="fas fa-feather-alt" style="color:#dbb87c; font-size: 2rem; margin-bottom: 1rem; display: inline-block;"></i>
+            <p>“For Rebecca Rose —<br> my love, every moment with you is a masterpiece,<br> every heartbeat a quiet symphony.”</p>
+            <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-top: -0.5rem; margin-bottom: 1.5rem; color: #dbb87c;">
+                I love you, Rebecca Rose.
+            </p>
+            <div>
+                <button class="btn-luxury" id="goldenRainBtn"><i class="fas fa-sparkle"></i> fall for you</button>
+                <button class="btn-luxury btn-luxury-solid" id="celebrateBtn"><i class="fas fa-champagne-glasses"></i> éclat celebration</button>
+            </div>
+            <div style="margin-top: 1.2rem;">
+                <button class="btn-luxury" id="memoryShowerBtn"><i class="fas fa-images"></i> falling polaroids</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-note">
+        <i class="fas fa-crown"></i> curated with devotion · for Rebecca Rose
+        <div class="made-with-love">made with love <i class="fas fa-heart" style="color:#dbb87c;"></i> Ggreen</div>
+    </div>
+</div>
+
+<!-- Floating music control -->
+<div id="musicToggle" class="music-control">
+    <i class="fas fa-music"></i> <span id="musicState">playing</span>
+</div>
+
+<script>
+    (function() {
+        // ---------- BACKGROUND MUSIC & VIDEO INTERACTION ----------
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicStateSpan = document.getElementById('musicState');
+        const videos = document.querySelectorAll('video');
+        
+        let musicPlaying = false;
+        let videosPlayingCount = 0;
+        
+        // Function to update music based on video play state
+        function updateMusicState() {
+            if (videosPlayingCount > 0) {
+                // If any video is playing, pause the background music
+                if (musicPlaying) {
+                    bgMusic.pause();
+                    musicPlaying = false;
+                    if (musicStateSpan) musicStateSpan.innerText = 'paused (video)';
+                }
+            } else {
+                // No videos playing: resume music if it was previously enabled
+                if (!musicPlaying && bgMusic.src && !bgMusic.paused) {
+                    // already playing? but musicPlaying flag might be false, so we try to play
+                    const playPromise = bgMusic.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            musicPlaying = true;
+                            if (musicStateSpan) musicStateSpan.innerText = 'playing';
+                        }).catch(e => {
+                            console.log('Autoplay blocked; user must interact');
+                            musicPlaying = false;
+                            if (musicStateSpan) musicStateSpan.innerText = 'muted';
+                        });
+                    }
+                } else if (!musicPlaying && bgMusic.paused) {
+                    // music is paused and no videos, try to resume
+                    const playPromise = bgMusic.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            musicPlaying = true;
+                            if (musicStateSpan) musicStateSpan.innerText = 'playing';
+                        }).catch(e => {
+                            musicPlaying = false;
+                            if (musicStateSpan) musicStateSpan.innerText = 'click to play';
+                        });
+                    }
+                }
+            }
+        }
+        
+        // Attach event listeners to each video
+        function attachVideoListeners(video) {
+            video.addEventListener('play', () => {
+                videosPlayingCount++;
+                updateMusicState();
+            });
+            video.addEventListener('pause', () => {
+                videosPlayingCount = Math.max(0, videosPlayingCount - 1);
+                updateMusicState();
+            });
+            video.addEventListener('ended', () => {
+                videosPlayingCount = Math.max(0, videosPlayingCount - 1);
+                updateMusicState();
+            });
+        }
+        
+        videos.forEach(vid => attachVideoListeners(vid));
+        
+        // Music toggle button (allow user to mute/unmute manually)
+        let userMuted = false;
+        if (musicToggle) {
+            musicToggle.addEventListener('click', () => {
+                if (musicPlaying) {
+                    bgMusic.pause();
+                    musicPlaying = false;
+                    userMuted = true;
+                    musicStateSpan.innerText = 'muted';
+                } else {
+                    // Try to play
+                    const playPromise = bgMusic.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            musicPlaying = true;
+                            userMuted = false;
+                            musicStateSpan.innerText = 'playing';
+                            updateMusicState(); // ensure no conflict with video
+                        }).catch(e => {
+                            musicPlaying = false;
+                            musicStateSpan.innerText = 'click to play';
+                        });
+                    } else {
+                        musicPlaying = false;
+                    }
+                }
+            });
+        }
+        
+        // Attempt to autoplay music on first user interaction (any click)
+        function firstUserInteraction() {
+            if (!musicPlaying && !userMuted && videosPlayingCount === 0) {
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        musicPlaying = true;
+                        if (musicStateSpan) musicStateSpan.innerText = 'playing';
+                    }).catch(() => {});
+                }
+            }
+            document.removeEventListener('click', firstUserInteraction);
+            document.removeEventListener('touchstart', firstUserInteraction);
+        }
+        document.addEventListener('click', firstUserInteraction);
+        document.addEventListener('touchstart', firstUserInteraction);
+        
+        // ---------- LUXURY FALLING PARTICLES (Canvas) ----------
+        const canvas = document.getElementById('fallingCanvas');
+        let ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId = null;
+        let canvasWidth, canvasHeight;
+        
+        const GOLD_PALETTE = ['#e4c27a', '#dbb87c', '#f3deba', '#c9a45b', '#f0e1bc'];
+        let galleryImageURLs = [];
+        
+        function updateGalleryURLs() {
+            const items = document.querySelectorAll('#premiumGallery .gallery-item img');
+            galleryImageURLs = Array.from(items).map(img => img.src);
+            if(galleryImageURLs.length === 0) {
+                galleryImageURLs = ['https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=80&h=80&fit=crop'];
+            }
+        }
+        
+        class Particle {
+            constructor(x, y, type, imageSrc = null) {
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.size = type === 'gold' ? Math.random() * 5 + 2 : 28 + Math.random() * 16;
+                this.opacity = Math.random() * 0.6 + 0.4;
+                this.speedY = Math.random() * 2.2 + 0.9;
+                this.speedX = (Math.random() - 0.5) * 0.7;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.03;
+                this.image = type === 'photo' && imageSrc ? this.loadImage(imageSrc) : null;
+                this.color = type === 'gold' ? GOLD_PALETTE[Math.floor(Math.random() * GOLD_PALETTE.length)] : null;
+            }
+            loadImage(src) {
+                const img = new Image();
+                img.src = src;
+                img.crossOrigin = "Anonymous";
+                return img;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotSpeed;
+                return this.y < canvasHeight + this.size;
+            }
+            draw(ctx) {
+                if (this.type === 'gold') {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.6, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = "#dbb87c";
+                    ctx.fill();
+                    ctx.restore();
+                } 
+                else if (this.type === 'photo' && this.image && this.image.complete) {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity * 0.9;
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation);
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = "rgba(0,0,0,0.3)";
+                    const w = this.size;
+                    const h = this.size;
+                    ctx.fillStyle = "#f7efe5";
+                    ctx.fillRect(-w/2 - 2, -h/2 - 2, w+4, h+4);
+                    ctx.drawImage(this.image, -w/2, -h/2, w, h);
+                    ctx.restore();
+                } 
+                else if (this.type === 'photo' && !this.image) {
+                    ctx.fillStyle = "#dbb87c";
+                    ctx.globalAlpha = 0.6;
+                    ctx.fillRect(this.x - 8, this.y - 8, 16, 16);
+                }
+            }
+        }
+        
+        function resizeCanvas() {
+            canvasWidth = window.innerWidth;
+            canvasHeight = window.innerHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+        }
+        
+        let lastSpawn = 0;
+        function spawnParticle(forceType = null, customPhotoUrl = null) {
+            if (!canvasWidth) return;
+            const type = forceType ? forceType : (Math.random() < 0.5 ? 'gold' : 'photo');
+            let photoUrl = null;
+            if (type === 'photo') {
+                if (customPhotoUrl) photoUrl = customPhotoUrl;
+                else if (galleryImageURLs.length) {
+                    const randomIndex = Math.floor(Math.random() * galleryImageURLs.length);
+                    photoUrl = galleryImageURLs[randomIndex];
+                }
+            }
+            const x = Math.random() * canvasWidth;
+            const y = -20 - Math.random() * 80;
+            particles.push(new Particle(x, y, type, photoUrl));
+            if (particles.length > 350) particles = particles.slice(-320);
+        }
+        
+        function animateParticles(now) {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            ctx.fillStyle = "rgba(10,8,6,0.05)";
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+            
+            if (now - lastSpawn > 45) {
+                let spawnCount = Math.random() < 0.7 ? 1 : 2;
+                for (let i=0; i<spawnCount; i++) {
+                    if (particles.length < 280) spawnParticle();
+                }
+                lastSpawn = now;
+            }
+            
+            for (let i=particles.length-1; i>=0; i--) {
+                const p = particles[i];
+                const alive = p.update();
+                if (alive && p.y < canvasHeight + 150) {
+                    p.draw(ctx);
+                } else {
+                    particles.splice(i,1);
+                }
+            }
+            animationId = requestAnimationFrame(animateParticles);
+        }
+        
+        function startCanvasEffect() {
+            resizeCanvas();
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                particles = [];
+            });
+            updateGalleryURLs();
+            for (let i=0; i<45; i++) setTimeout(() => spawnParticle(), i*40);
+            animateParticles(performance.now());
+        }
+        
+        function burstFallingPhotos(count = 22) {
+            updateGalleryURLs();
+            for (let i=0; i<count; i++) {
+                setTimeout(() => {
+                    let photoUrl = null;
+                    if (galleryImageURLs.length) {
+                        const idx = Math.floor(Math.random() * galleryImageURLs.length);
+                        photoUrl = galleryImageURLs[idx];
+                    }
+                    const x = Math.random() * canvasWidth;
+                    const y = -30;
+                    particles.push(new Particle(x, y, 'photo', photoUrl));
+                }, i * 60);
+            }
+        }
+        
+        function goldenCelebration() {
+            canvasConfetti({ particleCount: 220, spread: 85, origin: { y: 0.6 }, colors: ['#dbb87c', '#f3deba', '#e4c27a', '#f7efe5'], startVelocity: 18, decay: 0.9 });
+            canvasConfetti({ particleCount: 100, spread: 120, origin: { y: 0.3, x: 0.2 }, colors: ['#c9a45b'], startVelocity: 12 });
+            canvasConfetti({ particleCount: 100, spread: 120, origin: { y: 0.5, x: 0.8 }, colors: ['#e4c27a'] });
+            for (let i=0; i<35; i++) setTimeout(() => spawnParticle('gold'), i*25);
+            const msgDiv = document.createElement('div');
+            msgDiv.innerText = '✨ pour Rebecca Rose ✨';
+            msgDiv.style.position = 'fixed';
+            msgDiv.style.bottom = '20%';
+            msgDiv.style.left = '50%';
+            msgDiv.style.transform = 'translateX(-50%)';
+            msgDiv.style.background = 'rgba(10,8,6,0.8)';
+            msgDiv.style.backdropFilter = 'blur(12px)';
+            msgDiv.style.padding = '0.8rem 2rem';
+            msgDiv.style.borderRadius = '60px';
+            msgDiv.style.border = '1px solid #dbb87c';
+            msgDiv.style.fontFamily = "'Cormorant Garamond', serif";
+            msgDiv.style.fontSize = '1.3rem';
+            msgDiv.style.color = '#f3e5cf';
+            msgDiv.style.letterSpacing = '2px';
+            msgDiv.style.zIndex = '2000';
+            document.body.appendChild(msgDiv);
+            setTimeout(() => msgDiv.remove(), 2500);
+        }
+        
+        function memoryShower() {
+            updateGalleryURLs();
+            const total = 48;
+            for (let i=0; i<total; i++) {
+                setTimeout(() => {
+                    if (galleryImageURLs.length) {
+                        const randUrl = galleryImageURLs[Math.floor(Math.random() * galleryImageURLs.length)];
+                        const x = Math.random() * canvasWidth;
+                        const y = -25 - Math.random() * 100;
+                        particles.push(new Particle(x, y, 'photo', randUrl));
+                    } else {
+                        spawnParticle('gold');
+                    }
+                }, i * 45);
+            }
+            canvasConfetti({ particleCount: 80, spread: 45, origin: { y: 0.7 }, colors: ['#dbb87c', '#f0e1bc'], startVelocity: 10 });
+        }
+        
+        // Gallery lightbox
+        function setupGalleryLightbox() {
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                item.addEventListener('dblclick', (e) => {
+                    const img = item.querySelector('img');
+                    if (img && img.src) {
+                        const overlay = document.createElement('div');
+                        overlay.style.position = 'fixed';
+                        overlay.style.top = '0';
+                        overlay.style.left = '0';
+                        overlay.style.width = '100%';
+                        overlay.style.height = '100%';
+                        overlay.style.backgroundColor = 'rgba(0,0,0,0.9)';
+                        overlay.style.backdropFilter = 'blur(10px)';
+                        overlay.style.zIndex = '10000';
+                        overlay.style.display = 'flex';
+                        overlay.style.alignItems = 'center';
+                        overlay.style.justifyContent = 'center';
+                        overlay.style.cursor = 'pointer';
+                        const largeImg = document.createElement('img');
+                        largeImg.src = img.src;
+                        largeImg.style.maxWidth = '85%';
+                        largeImg.style.maxHeight = '85%';
+                        largeImg.style.borderRadius = '1.5rem';
+                        largeImg.style.border = '2px solid #dbb87c';
+                        overlay.appendChild(largeImg);
+                        overlay.addEventListener('click', () => overlay.remove());
+                        document.body.appendChild(overlay);
+                    }
+                });
+            });
+        }
+        
+        // MutationObserver for dynamic gallery updates
+        const observer = new MutationObserver(() => updateGalleryURLs());
+        const galleryContainer = document.getElementById('premiumGallery');
+        if(galleryContainer) observer.observe(galleryContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
+        
+        updateGalleryURLs();
+        setupGalleryLightbox();
+        startCanvasEffect();
+        
+        // Buttons
+        document.getElementById('goldenRainBtn')?.addEventListener('click', () => {
+            for(let i=0;i<18;i++) setTimeout(() => {
+                if(Math.random()<0.6) spawnParticle('photo');
+                else spawnParticle('gold');
+            }, i*50);
+            canvasConfetti({ particleCount: 30, spread: 30, origin: { y: 0.5 }, colors: ['#dbb87c'] });
+        });
+        document.getElementById('celebrateBtn')?.addEventListener('click', goldenCelebration);
+        document.getElementById('memoryShowerBtn')?.addEventListener('click', memoryShower);
+        
+        // Initial gentle gold shimmer
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                for(let i=0;i<12;i++) setTimeout(() => spawnParticle('gold'), i*70);
+            }, 800);
+        });
+    })();
+</script>
+</body>
+</html>
